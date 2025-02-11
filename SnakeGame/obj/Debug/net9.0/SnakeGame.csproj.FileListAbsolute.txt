@@ -1,0 +1,14 @@
+/Users/petrnosek/Desktop/UTB/PO/SnakeGame/SnakeGame/bin/Debug/net9.0/SnakeGame
+/Users/petrnosek/Desktop/UTB/PO/SnakeGame/SnakeGame/bin/Debug/net9.0/SnakeGame.deps.json
+/Users/petrnosek/Desktop/UTB/PO/SnakeGame/SnakeGame/bin/Debug/net9.0/SnakeGame.runtimeconfig.json
+/Users/petrnosek/Desktop/UTB/PO/SnakeGame/SnakeGame/bin/Debug/net9.0/SnakeGame.dll
+/Users/petrnosek/Desktop/UTB/PO/SnakeGame/SnakeGame/bin/Debug/net9.0/SnakeGame.pdb
+/Users/petrnosek/Desktop/UTB/PO/SnakeGame/SnakeGame/obj/Debug/net9.0/SnakeGame.GeneratedMSBuildEditorConfig.editorconfig
+/Users/petrnosek/Desktop/UTB/PO/SnakeGame/SnakeGame/obj/Debug/net9.0/SnakeGame.AssemblyInfoInputs.cache
+/Users/petrnosek/Desktop/UTB/PO/SnakeGame/SnakeGame/obj/Debug/net9.0/SnakeGame.AssemblyInfo.cs
+/Users/petrnosek/Desktop/UTB/PO/SnakeGame/SnakeGame/obj/Debug/net9.0/SnakeGame.csproj.CoreCompileInputs.cache
+/Users/petrnosek/Desktop/UTB/PO/SnakeGame/SnakeGame/obj/Debug/net9.0/SnakeGame.dll
+/Users/petrnosek/Desktop/UTB/PO/SnakeGame/SnakeGame/obj/Debug/net9.0/refint/SnakeGame.dll
+/Users/petrnosek/Desktop/UTB/PO/SnakeGame/SnakeGame/obj/Debug/net9.0/SnakeGame.pdb
+/Users/petrnosek/Desktop/UTB/PO/SnakeGame/SnakeGame/obj/Debug/net9.0/SnakeGame.genruntimeconfig.cache
+/Users/petrnosek/Desktop/UTB/PO/SnakeGame/SnakeGame/obj/Debug/net9.0/ref/SnakeGame.dll
