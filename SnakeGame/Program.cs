@@ -9,22 +9,20 @@ namespace Snake
 {
     class Program
     {
+        static int windowWidth = Console.WindowWidth;
+        static int windowHeight = Console.WindowHeight;
+        static int score = 5;
+        static Direction movement = Direction.Right;
         static void Main(string[] args)
         {
             //Console.WindowHeight = 16;
             //Console.WindowWidth = 32;
-            
-            int windowWidth = Console.WindowWidth;
-            int windowHeight = Console.WindowHeight;
-            
+  
             Random random = new Random();
             
-            int score = 5;
             bool isGameOver = false;
             
             Pixel head = new Pixel(windowWidth/2, windowHeight/2, ConsoleColor.Red);
-            
-            string movement = "RIGHT";
             
             List<int> bodyXPositions = new List<int>();
             List<int> bodyYPositions = new List<int>();
@@ -35,8 +33,7 @@ namespace Snake
             DateTime startTime = DateTime.Now;
             DateTime currentTime = DateTime.Now;
             
-            string buttonpressed = "no";
-            
+            bool isButtonPressed = false;
             
             while (true)
             {
@@ -45,26 +42,9 @@ namespace Snake
                 { 
                     isGameOver = true;
                 }
-                for (int i = 0;i< windowWidth; i++)
-                {
-                    Console.SetCursorPosition(i, 0);
-                    Console.Write("■");
-                }
-                for (int i = 0; i < windowWidth; i++)
-                {
-                    Console.SetCursorPosition(i, windowHeight -1);
-                    Console.Write("■");
-                }
-                for (int i = 0; i < windowHeight; i++)
-                {
-                    Console.SetCursorPosition(0, i);
-                    Console.Write("■");
-                }
-                for (int i = 0; i < windowHeight; i++)
-                {
-                    Console.SetCursorPosition(windowWidth - 1, i);
-                    Console.Write("■");
-                }
+                
+                DrawBorders(windowHeight, windowWidth);
+                
                 Console.ForegroundColor = ConsoleColor.Green;
                 if (berryXPosition == head.Xpos && berryYPosition == head.Ypos)
                 {
@@ -88,38 +68,36 @@ namespace Snake
                 Console.SetCursorPosition(head.Xpos, head.Ypos);
                 Console.ForegroundColor = head.Color;
                 Console.Write("■");
-                Console.SetCursorPosition(berryXPosition, berryYPosition);
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.Write("■");
+                DrawBerry(berryXPosition, berryYPosition);
                 startTime = DateTime.Now;
-                buttonpressed = "no";
+                isButtonPressed = false;
                 while (true)
                 {
                     currentTime = DateTime.Now;
-                    if (currentTime.Subtract(startTime).TotalMilliseconds > 500) { break; }
+                    if (currentTime.Subtract(startTime).TotalMilliseconds > 100) { break; }
                     if (Console.KeyAvailable)
                     {
                         ConsoleKeyInfo toets = Console.ReadKey(true);
                         //Console.WriteLine(toets.Key.ToString());
-                        if (toets.Key.Equals(ConsoleKey.UpArrow) && movement != "DOWN" && buttonpressed == "no")
+                        if (toets.Key.Equals(ConsoleKey.UpArrow) && movement != Direction.Down && isButtonPressed == false)
                         {
-                            movement = "UP";
-                            buttonpressed = "yes";
+                            movement = Direction.Up;
+                            isButtonPressed = true;
                         }
-                        if (toets.Key.Equals(ConsoleKey.DownArrow) && movement != "UP" && buttonpressed == "no")
+                        if (toets.Key.Equals(ConsoleKey.DownArrow) && movement != Direction.Up && isButtonPressed == false)
                         {
-                            movement = "DOWN";
-                            buttonpressed = "yes";
+                            movement = Direction.Down;
+                            isButtonPressed = true;
                         }
-                        if (toets.Key.Equals(ConsoleKey.LeftArrow) && movement != "RIGHT" && buttonpressed == "no")
+                        if (toets.Key.Equals(ConsoleKey.LeftArrow) && movement != Direction.Right && isButtonPressed == false)
                         {
-                            movement = "LEFT";
-                            buttonpressed = "yes";
+                            movement = Direction.Left;
+                            isButtonPressed = true;
                         }
-                        if (toets.Key.Equals(ConsoleKey.RightArrow) && movement != "LEFT" && buttonpressed == "no")
+                        if (toets.Key.Equals(ConsoleKey.RightArrow) && movement != Direction.Left && isButtonPressed == false)
                         {
-                            movement = "RIGHT";
-                            buttonpressed = "yes";
+                            movement = Direction.Right;
+                            isButtonPressed = true;
                         }
                     }
                 }
@@ -127,16 +105,16 @@ namespace Snake
                 bodyYPositions.Add(head.Ypos);
                 switch (movement)
                 {
-                    case "UP":
+                    case Direction.Up:
                         head.Ypos--;
                         break;
-                    case "DOWN":
+                    case Direction.Down:
                         head.Ypos++;
                         break;
-                    case "LEFT":
+                    case Direction.Left:
                         head.Xpos--;
                         break;
-                    case "RIGHT":
+                    case Direction.Right:
                         head.Xpos++;
                         break;
                 }
@@ -146,9 +124,60 @@ namespace Snake
                     bodyYPositions.RemoveAt(0);
                 }
             }
+
+            ShowEndgameScreen();
+        }
+
+        public static void ShowEndgameScreen()
+        {
             Console.SetCursorPosition(windowWidth / 5, windowHeight / 2);
             Console.WriteLine("Game over, Score: "+ score);
             Console.SetCursorPosition(windowWidth / 5, windowHeight / 2 +1);
+        }
+
+        public static void DrawBorders(int windowHeight, int windowWidth)
+        {
+            for (int i = 0;i< windowWidth; i++)
+            {
+                DrawPixel(i, 0);
+            }
+            for (int i = 0; i < windowWidth; i++)
+            {
+                DrawPixel(i, windowHeight -1);
+            }
+            for (int i = 0; i < windowHeight; i++)
+            {
+                DrawPixel(0, i);
+            }
+            for (int i = 0; i < windowHeight; i++)
+            {
+                DrawPixel(windowWidth - 1, i);
+            }
+        }
+
+        public static void DrawSnake()
+        {
+            
+        }
+
+        public static void DrawBerry(int x, int y)
+        {
+            DrawPixel(x,y, ConsoleColor.Cyan);
+        }
+
+        public static void DrawPixel(int x, int y, ConsoleColor color = ConsoleColor.White)
+        {
+            Console.SetCursorPosition(x, y);
+            Console.ForegroundColor = color;
+            Console.Write("■");
+        }
+
+        enum Direction
+        {
+            Up,
+            Down,
+            Left,
+            Right
         }
         
         class Pixel
