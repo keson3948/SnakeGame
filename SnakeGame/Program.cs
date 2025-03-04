@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 
+// Červená hlava, zelené tělo, modré třešničky
+
 namespace Snake
 {
     class Program
@@ -13,19 +15,18 @@ namespace Snake
         static int windowHeight = Console.WindowHeight;
         static int score = 5;
         static Direction movement = Direction.Right;
+        static Pixel head;
+        static bool isGameOver;
+        static List<int> bodyXPositions = new List<int>();
+        static List<int> bodyYPositions = new List<int>();
+        
         static void Main(string[] args)
         {
             //Console.WindowHeight = 16;
             //Console.WindowWidth = 32;
   
+            isGameOver = false;
             Random random = new Random();
-            
-            bool isGameOver = false;
-            
-            Pixel head = new Pixel(windowWidth/2, windowHeight/2, ConsoleColor.Red);
-            
-            List<int> bodyXPositions = new List<int>();
-            List<int> bodyYPositions = new List<int>();
             
             int berryXPosition = random.Next(0, windowWidth);
             int berryYPosition = random.Next(0, windowHeight);
@@ -33,38 +34,31 @@ namespace Snake
             DateTime startTime = DateTime.Now;
             DateTime currentTime = DateTime.Now;
             
+            head =  new Pixel(windowWidth/2, windowHeight/2, ConsoleColor.Red);
+            
             bool isButtonPressed = false;
             
             while (true)
             {
                 Console.Clear();
-                if (head.Xpos == windowWidth-1 || head.Xpos == 0 ||head.Ypos == windowHeight-1 || head.Ypos == 0)
-                { 
-                    isGameOver = true;
-                }
+                GameOverCheck();
                 
                 DrawBorders(windowHeight, windowWidth);
                 
-                Console.ForegroundColor = ConsoleColor.Green;
                 if (berryXPosition == head.Xpos && berryYPosition == head.Ypos)
                 {
                     score++;
                     berryXPosition = random.Next(1, windowWidth-2);
                     berryYPosition = random.Next(1, windowHeight-2);
                 } 
-                for (int i = 0; i < bodyXPositions.Count(); i++)
-                {
-                    Console.SetCursorPosition(bodyXPositions[i], bodyYPositions[i]);
-                    Console.Write("■");
-                    if (bodyXPositions[i] == head.Xpos && bodyYPositions[i] == head.Ypos)
-                    {
-                        isGameOver = true;
-                    }
-                }
+                
+                DrawSnake();
+
                 if (isGameOver)
                 {
                     break;
                 }
+                
                 Console.SetCursorPosition(head.Xpos, head.Ypos);
                 Console.ForegroundColor = head.Color;
                 Console.Write("■");
@@ -128,6 +122,14 @@ namespace Snake
             ShowEndgameScreen();
         }
 
+        private static void GameOverCheck()
+        {
+            if (head.Xpos == windowWidth-1 || head.Xpos == 0 ||head.Ypos == windowHeight-1 || head.Ypos == 0)
+            { 
+                isGameOver = true;
+            }
+        }
+
         public static void ShowEndgameScreen()
         {
             Console.SetCursorPosition(windowWidth / 5, windowHeight / 2);
@@ -157,7 +159,17 @@ namespace Snake
 
         public static void DrawSnake()
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             
+            for (int i = 0; i < bodyXPositions.Count(); i++)
+            {
+                Console.SetCursorPosition(bodyXPositions[i], bodyYPositions[i]);
+                Console.Write("■");
+                if (bodyXPositions[i] == head.Xpos && bodyYPositions[i] == head.Ypos)
+                {
+                    isGameOver = true;
+                }
+            }
         }
 
         public static void DrawBerry(int x, int y)
