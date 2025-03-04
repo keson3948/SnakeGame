@@ -13,12 +13,13 @@ namespace Snake
 {
     class Program
     {
-        static Random random = new Random();
         static int windowWidth = Console.WindowWidth;
         static int windowHeight = Console.WindowHeight;
-        
+        static int GameSpeed = 100;
         static int score = 5;
-        static bool isGameOver;
+        static bool isGameOver = false;
+        
+        static Random random = new Random();
         static Direction movement = Direction.Right;
         
         static Pixel head;
@@ -47,7 +48,7 @@ namespace Snake
                 HandleInput();
                 MoveSnake();
                 GameOverCheck();
-                Task.Delay(100).Wait();
+                Task.Delay(GameSpeed).Wait();
             }
 
             ShowEndgameScreen();
@@ -81,20 +82,20 @@ namespace Snake
         {
             if (Console.KeyAvailable)
             {
-                ConsoleKeyInfo toets = Console.ReadKey(true);
-                if (toets.Key.Equals(ConsoleKey.UpArrow) && movement != Direction.Down)
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                if (keyInfo.Key.Equals(ConsoleKey.UpArrow) && movement != Direction.Down)
                 {
                     movement = Direction.Up;
                 }
-                if (toets.Key.Equals(ConsoleKey.DownArrow) && movement != Direction.Up )
+                if (keyInfo.Key.Equals(ConsoleKey.DownArrow) && movement != Direction.Up )
                 {
                     movement = Direction.Down;
                 }
-                if (toets.Key.Equals(ConsoleKey.LeftArrow) && movement != Direction.Right)
+                if (keyInfo.Key.Equals(ConsoleKey.LeftArrow) && movement != Direction.Right)
                 {
                     movement = Direction.Left;
                 }
-                if (toets.Key.Equals(ConsoleKey.RightArrow) && movement != Direction.Left)
+                if (keyInfo.Key.Equals(ConsoleKey.RightArrow) && movement != Direction.Left)
                 {
                     movement = Direction.Right;
                 }
@@ -111,7 +112,7 @@ namespace Snake
             if (berry.Xpos == head.Xpos && berry.Ypos == head.Ypos)
             {
                 score++;
-                berry = new Pixel(random.Next(1, windowWidth-2), random.Next(1, windowHeight-2), ConsoleColor.Cyan);
+                berry = new Pixel(random.Next(2, windowWidth-1), random.Next(2, windowHeight-1), ConsoleColor.Cyan);
             } 
         }
 
