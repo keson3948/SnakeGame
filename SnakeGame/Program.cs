@@ -19,6 +19,8 @@ namespace Snake
         static bool isGameOver;
         static List<int> bodyXPositions = new List<int>();
         static List<int> bodyYPositions = new List<int>();
+        static bool isButtonPressed = false;
+        static Random random = new Random();
         
         static void Main(string[] args)
         {
@@ -26,100 +28,87 @@ namespace Snake
             //Console.WindowWidth = 32;
   
             isGameOver = false;
-            Random random = new Random();
+            isButtonPressed = false;
             
             int berryXPosition = random.Next(0, windowWidth);
             int berryYPosition = random.Next(0, windowHeight);
             
-            DateTime startTime = DateTime.Now;
-            DateTime currentTime = DateTime.Now;
-            
             head =  new Pixel(windowWidth/2, windowHeight/2, ConsoleColor.Red);
             
-            bool isButtonPressed = false;
-            
-            while (true)
+            while (isGameOver != true)
             {
                 Console.Clear();
                 GameOverCheck();
-                
                 DrawBorders(windowHeight, windowWidth);
-                
                 if (berryXPosition == head.Xpos && berryYPosition == head.Ypos)
                 {
                     score++;
                     berryXPosition = random.Next(1, windowWidth-2);
                     berryYPosition = random.Next(1, windowHeight-2);
                 } 
-                
                 DrawSnake();
-
-                if (isGameOver)
-                {
-                    break;
-                }
-                
-                Console.SetCursorPosition(head.Xpos, head.Ypos);
-                Console.ForegroundColor = head.Color;
-                Console.Write("■");
                 DrawBerry(berryXPosition, berryYPosition);
-                startTime = DateTime.Now;
                 isButtonPressed = false;
-                while (true)
-                {
-                    currentTime = DateTime.Now;
-                    if (currentTime.Subtract(startTime).TotalMilliseconds > 100) { break; }
-                    if (Console.KeyAvailable)
-                    {
-                        ConsoleKeyInfo toets = Console.ReadKey(true);
-                        //Console.WriteLine(toets.Key.ToString());
-                        if (toets.Key.Equals(ConsoleKey.UpArrow) && movement != Direction.Down && isButtonPressed == false)
-                        {
-                            movement = Direction.Up;
-                            isButtonPressed = true;
-                        }
-                        if (toets.Key.Equals(ConsoleKey.DownArrow) && movement != Direction.Up && isButtonPressed == false)
-                        {
-                            movement = Direction.Down;
-                            isButtonPressed = true;
-                        }
-                        if (toets.Key.Equals(ConsoleKey.LeftArrow) && movement != Direction.Right && isButtonPressed == false)
-                        {
-                            movement = Direction.Left;
-                            isButtonPressed = true;
-                        }
-                        if (toets.Key.Equals(ConsoleKey.RightArrow) && movement != Direction.Left && isButtonPressed == false)
-                        {
-                            movement = Direction.Right;
-                            isButtonPressed = true;
-                        }
-                    }
-                }
-                bodyXPositions.Add(head.Xpos);
-                bodyYPositions.Add(head.Ypos);
-                switch (movement)
-                {
-                    case Direction.Up:
-                        head.Ypos--;
-                        break;
-                    case Direction.Down:
-                        head.Ypos++;
-                        break;
-                    case Direction.Left:
-                        head.Xpos--;
-                        break;
-                    case Direction.Right:
-                        head.Xpos++;
-                        break;
-                }
-                if (bodyXPositions.Count() > score)
-                {
-                    bodyXPositions.RemoveAt(0);
-                    bodyYPositions.RemoveAt(0);
-                }
+                HandleInput();
+                MoveSnake();
+                Task.Delay(100).Wait();
             }
 
             ShowEndgameScreen();
+        }
+
+        private static void MoveSnake()
+        {
+            bodyXPositions.Add(head.Xpos);
+            bodyYPositions.Add(head.Ypos);
+            switch (movement)
+            {
+                case Direction.Up:
+                    head.Ypos--;
+                    break;
+                case Direction.Down:
+                    head.Ypos++;
+                    break;
+                case Direction.Left:
+                    head.Xpos--;
+                    break;
+                case Direction.Right:
+                    head.Xpos++;
+                    break;
+            }
+            if (bodyXPositions.Count() > score)
+            {
+                bodyXPositions.RemoveAt(0);
+                bodyYPositions.RemoveAt(0);
+            }
+        }
+
+        public static void HandleInput()
+        {
+            if (Console.KeyAvailable)
+            {
+                ConsoleKeyInfo toets = Console.ReadKey(true);
+                if (toets.Key.Equals(ConsoleKey.UpArrow) && movement != Direction.Down && isButtonPressed == false)
+                {
+                    movement = Direction.Up;
+                    isButtonPressed = true;
+                }
+                if (toets.Key.Equals(ConsoleKey.DownArrow) && movement != Direction.Up && isButtonPressed == false)
+                {
+                    movement = Direction.Down;
+                    isButtonPressed = true;
+                }
+                if (toets.Key.Equals(ConsoleKey.LeftArrow) && movement != Direction.Right && isButtonPressed == false)
+                {
+                    movement = Direction.Left;
+                    isButtonPressed = true;
+                }
+                if (toets.Key.Equals(ConsoleKey.RightArrow) && movement != Direction.Left && isButtonPressed == false)
+                {
+                    movement = Direction.Right;
+                    isButtonPressed = true;
+                }
+            }
         }
 
         private static void GameOverCheck()
@@ -170,6 +159,10 @@ namespace Snake
                     isGameOver = true;
                 }
             }
+            
+            Console.SetCursorPosition(head.Xpos, head.Ypos);
+            Console.ForegroundColor = head.Color;
+            Console.Write("■");
         }
 
         public static void DrawBerry(int x, int y)
