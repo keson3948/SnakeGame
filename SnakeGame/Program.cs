@@ -19,7 +19,6 @@ namespace Snake
         static bool isGameOver;
         static List<int> bodyXPositions = new List<int>();
         static List<int> bodyYPositions = new List<int>();
-        static bool isButtonPressed = false;
         static Random random = new Random();
         
         static void Main(string[] args)
@@ -28,7 +27,6 @@ namespace Snake
             //Console.WindowWidth = 32;
   
             isGameOver = false;
-            isButtonPressed = false;
             
             int berryXPosition = random.Next(0, windowWidth);
             int berryYPosition = random.Next(0, windowHeight);
@@ -48,7 +46,6 @@ namespace Snake
                 } 
                 DrawSnake();
                 DrawBerry(berryXPosition, berryYPosition);
-                isButtonPressed = false;
                 HandleInput();
                 MoveSnake();
                 Task.Delay(100).Wait();
@@ -88,25 +85,21 @@ namespace Snake
             if (Console.KeyAvailable)
             {
                 ConsoleKeyInfo toets = Console.ReadKey(true);
-                if (toets.Key.Equals(ConsoleKey.UpArrow) && movement != Direction.Down && isButtonPressed == false)
+                if (toets.Key.Equals(ConsoleKey.UpArrow) && movement != Direction.Down)
                 {
                     movement = Direction.Up;
-                    isButtonPressed = true;
                 }
-                if (toets.Key.Equals(ConsoleKey.DownArrow) && movement != Direction.Up && isButtonPressed == false)
+                if (toets.Key.Equals(ConsoleKey.DownArrow) && movement != Direction.Up )
                 {
                     movement = Direction.Down;
-                    isButtonPressed = true;
                 }
-                if (toets.Key.Equals(ConsoleKey.LeftArrow) && movement != Direction.Right && isButtonPressed == false)
+                if (toets.Key.Equals(ConsoleKey.LeftArrow) && movement != Direction.Right)
                 {
                     movement = Direction.Left;
-                    isButtonPressed = true;
                 }
-                if (toets.Key.Equals(ConsoleKey.RightArrow) && movement != Direction.Left && isButtonPressed == false)
+                if (toets.Key.Equals(ConsoleKey.RightArrow) && movement != Direction.Left)
                 {
                     movement = Direction.Right;
-                    isButtonPressed = true;
                 }
             }
         }
